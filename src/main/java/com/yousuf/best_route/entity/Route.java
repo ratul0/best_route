@@ -3,6 +3,7 @@ package com.yousuf.best_route.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -24,6 +25,8 @@ public class Route {
     private String toPort;
     private Long duration;
     private int count;
-    @Column(columnDefinition="TEXT")
-    private String points;
+    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
+    private List<Point> points;
+
+
 }

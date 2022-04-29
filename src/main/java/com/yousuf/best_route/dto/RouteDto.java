@@ -2,11 +2,12 @@ package com.yousuf.best_route.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class RouteDto {
-    private Long id;
     private String fromPort;
     private String toPort;
     private Long duration;
-    private String points;
+    List<PointDto> points;
 }

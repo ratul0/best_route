@@ -1,8 +1,10 @@
 package com.yousuf.best_route.service;
 
+import com.google.gson.Gson;
 import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
+import com.yousuf.best_route.entity.Point;
 import com.yousuf.best_route.entity.Route;
 import com.yousuf.best_route.repository.RouteRepository;
 import lombok.AllArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -27,8 +30,6 @@ public class DataLoadingService {
     public void eventListener() {
         loadData();
     }
-
-
     public void loadData() {
         try{
             log.info("Loading data...");
@@ -43,16 +44,33 @@ public class DataLoadingService {
             List<Record> parseAllRecords = parser.parseAllRecords(inputStream);
 
             parseAllRecords.forEach(record -> {
-                Route route = new Route();
-                route.setShipId(record.getString("id"));
-                route.setFromSeq(record.getInt("from_seq"));
-                route.setToSeq(record.getInt("to_seq"));
-                route.setFromPort(record.getString("from_port"));
-                route.setToPort(record.getString("to_port"));
-                route.setDuration(record.getLong("leg_duration"));
-                route.setCount(record.getInt("count"));
-                route.setPoints(record.getString("points"));
-                routes.add(route);
+                try{
+                    Route route = new Route();
+                    List<Point> points = new ArrayList<>();
+                    String pointsString = record.getString("points");
+                    String[][] parsedPoints = new Gson().fromJson(pointsString,String[][].class);
+
+
+                    route.setPoints(points);
+                    route.setShipId(record.getString("id"));
+                    route.setFromSeq(record.getInt("from_seq"));
+                    route.setToSeq(record.getInt("to_seq"));
+                    route.setFromPort(record.getString("from_port"));
+                    route.setToPort(record.getString("to_port"));
+                    route.setDuration(record.getLong("leg_duration"));
+                    route.setCount(record.getInt("count"));
+
+                    for (String[] dataPoint: parsedPoints) {
+                        Point point = new Point();
+                        point.setLatitude(Double.parseDouble(dataPoint[1]));
+                        point.setLongitude(Double.parseDouble(dataPoint[0]));
+                        point.setRoute(route);
+                        points.add(point);
+                    }
+                    routes.add(route);
+                }catch (Exception e){
+                    log.error("Error while parsing record: {}", record);
+                }
             });
             routeRepository.saveAll(routes);
         } catch (Exception e) {
