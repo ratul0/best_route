@@ -7,5 +7,6 @@ public class RouteDto {
     private Long id;
     private String fromPort;
     private String toPort;
+    private Long duration;
     private String points;
 }
