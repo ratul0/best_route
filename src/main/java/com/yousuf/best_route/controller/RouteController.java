@@ -17,7 +17,7 @@ public class RouteController {
 
     @GetMapping("/fastest-route/{from}/{to}")
     public RouteDto fastestRoute(@PathVariable("from") Ports from, @PathVariable("to") Ports to) {
-        return this.routeService.getFastestRoute(from.name(),to.name());
+        return this.routeService.getFastestRoute(from.name(), to.name());
     }
 
     @GetMapping("/safest-route/{from}/{to}")

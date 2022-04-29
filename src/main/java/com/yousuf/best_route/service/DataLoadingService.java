@@ -28,7 +28,7 @@ public class DataLoadingService {
 
     @EventListener(ApplicationStartedEvent.class)
     public void eventListener() {
-        loadData();
+        //loadData();
     }
     public void loadData() {
         try{
