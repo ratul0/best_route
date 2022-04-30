@@ -49,10 +49,6 @@ public class RouteService {
         return modelMapper.map(route, RouteDto.class);
     }
 
-    private Route convertToEntity(RouteDto routeDto) {
-        return modelMapper.map(routeDto, Route.class);
-    }
-
     private HashMap<Ports, String> getPorts(HashMap<Ports, String> ports, List<String> fromPorts) throws InvalidPortNameException {
         for (String portCode : fromPorts) {
             if(PortName.LISTOFNAMES.get(Ports.valueOf(portCode))==null) {
