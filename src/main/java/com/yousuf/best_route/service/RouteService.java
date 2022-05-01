@@ -39,7 +39,7 @@ public class RouteService {
         return getPorts(portMap, fromPorts);
     }
 
-    public HashMap<Ports, String> getToPorts() throws InvalidPortNameException {
+    public HashMap<Ports, String> getToPorts() {
         HashMap<Ports, String> portMap = new HashMap<>();
         List<String> fromPorts =  routeRepository.findDistinctToPort();
         return getPorts(portMap, fromPorts);
@@ -49,7 +49,7 @@ public class RouteService {
         return modelMapper.map(route, RouteDto.class);
     }
 
-    private HashMap<Ports, String> getPorts(HashMap<Ports, String> ports, List<String> fromPorts) throws InvalidPortNameException {
+    private HashMap<Ports, String> getPorts(HashMap<Ports, String> ports, List<String> fromPorts) {
         for (String portCode : fromPorts) {
             if(PortName.LISTOFNAMES.get(Ports.valueOf(portCode))==null) {
                 throw new InvalidPortNameException("Invalid Port Name");

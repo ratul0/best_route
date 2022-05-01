@@ -1,11 +1,11 @@
 package com.yousuf.best_route.service;
 
-import com.yousuf.best_route.entity.Route;
 import com.yousuf.best_route.exception.InvalidPortNameException;
 import com.yousuf.best_route.exception.RouteNotFoundException;
 import com.yousuf.best_route.repository.RouteRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
@@ -18,16 +18,8 @@ class RouteServiceTest {
 
     @Mock private RouteRepository routeRepository;
     @Mock private ModelMapper modelMapper;
+    @InjectMocks
     private RouteService routeService;
-
-    @BeforeEach
-    void setUp() {
-        routeService = new RouteService(routeRepository,modelMapper);
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
 
     @Test
     @DisplayName("Should throw a RouteNotFoundException when the route is not found")
